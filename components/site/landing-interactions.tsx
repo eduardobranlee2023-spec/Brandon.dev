@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { Application } from "@splinetool/runtime";
 import { Accordion, type AccordionItem } from "@/components/interior/accordion";
 import { SplineScene } from "@/components/ui/splite";
 import {
@@ -81,7 +82,48 @@ export function CapabilitiesMarquee() {
 export function PortfolioPreview() {
   const reduced = useReducedMotion() === true;
   const [loaded, setLoaded] = useState(false);
+  const previewRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<HTMLDivElement>(null);
+  const splineRef = useRef<Application | null>(null);
+
+  useEffect(() => {
+    if (!loaded) return;
+
+    const preview = previewRef.current;
+    const spline = splineRef.current;
+    if (!preview || !spline) return;
+
+    let isInView = false;
+    const syncPlayback = () => {
+      if (isInView && !document.hidden) {
+        spline.play();
+      } else {
+        spline.stop();
+      }
+    };
+
+    syncPlayback();
+
+    const observer =
+      "IntersectionObserver" in window
+        ? new IntersectionObserver(([entry]) => {
+            isInView = entry.isIntersecting;
+            syncPlayback();
+          })
+        : null;
+    observer?.observe(preview);
+    if (!observer) {
+      isInView = true;
+      syncPlayback();
+    }
+
+    document.addEventListener("visibilitychange", syncPlayback);
+    return () => {
+      observer?.disconnect();
+      document.removeEventListener("visibilitychange", syncPlayback);
+      spline.stop();
+    };
+  }, [loaded]);
 
   useEffect(() => {
     if (!loaded) return;
@@ -89,30 +131,59 @@ export function PortfolioPreview() {
     const canvas = sceneRef.current?.querySelector("canvas");
     if (!canvas) return;
 
-    const forwardPointerMove = (event: PointerEvent) => {
-      if (event.target instanceof Node && canvas.contains(event.target)) {
+    let frame = 0;
+    let latestPointer: PointerEvent | null = null;
+    let lastForwardedAt = 0;
+
+    const flushPointerMove = () => {
+      frame = 0;
+      if (!latestPointer) return;
+
+      const now = performance.now();
+      if (now - lastForwardedAt < 1000 / 30) {
+        frame = requestAnimationFrame(flushPointerMove);
         return;
       }
 
+      const pointer = latestPointer;
+      latestPointer = null;
+      lastForwardedAt = now;
       canvas.dispatchEvent(
         new PointerEvent("pointermove", {
           bubbles: true,
-          clientX: event.clientX,
-          clientY: event.clientY,
-          pointerId: event.pointerId,
-          pointerType: event.pointerType,
-          isPrimary: event.isPrimary,
-          buttons: event.buttons,
+          clientX: pointer.clientX,
+          clientY: pointer.clientY,
+          pointerId: pointer.pointerId,
+          pointerType: pointer.pointerType,
+          isPrimary: pointer.isPrimary,
+          buttons: pointer.buttons,
         }),
       );
     };
 
-    window.addEventListener("pointermove", forwardPointerMove);
-    return () => window.removeEventListener("pointermove", forwardPointerMove);
+    const forwardPointerMove = (event: PointerEvent) => {
+      if (event.target instanceof Node && canvas.contains(event.target)) {
+        latestPointer = null;
+        cancelAnimationFrame(frame);
+        frame = 0;
+        return;
+      }
+
+      latestPointer = event;
+      if (frame) return;
+      frame = requestAnimationFrame(flushPointerMove);
+    };
+
+    window.addEventListener("pointermove", forwardPointerMove, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", forwardPointerMove);
+      cancelAnimationFrame(frame);
+    };
   }, [loaded]);
 
   return (
     <motion.div
+      ref={previewRef}
       initial={reduced ? false : { opacity: 0, y: 20, rotate: 1.5 }}
       animate={{ opacity: 1, y: 0, rotate: 0 }}
       transition={reduced ? { duration: 0 } : { duration: 0.8, ease: EASE, delay: 0.16 }}
@@ -148,7 +219,10 @@ export function PortfolioPreview() {
           <SplineScene
             scene={SPLINE_SCENE}
             className="h-full w-full"
-            onLoad={() => setLoaded(true)}
+            onLoad={(spline) => {
+              splineRef.current = spline;
+              setLoaded(true);
+            }}
             renderOnDemand
           />
         </div>
