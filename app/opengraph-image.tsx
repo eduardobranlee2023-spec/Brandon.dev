@@ -1,23 +1,12 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "interior.dev";
+export const alt = "Brandon.dev — diseño y desarrollo web";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 const BEZEL = "#141312";
 const PANEL = "#1D1D1A";
 const HAIRLINE = "rgba(255,255,255,0.06)";
-const CELL_OFF = "rgba(243,243,239,0.09)";
-const CELL_ON = "#93B0FF";
-
-const COLS = 10;
-const ROWS = 8;
-const LIT_COL = 3;
-const LIT_ROW = 4;
-
-const CELL = 22;
-const GAP = 9;
-const RADIUS = 6;
 
 export default function OpengraphImage() {
   return new ImageResponse(
@@ -34,31 +23,52 @@ export default function OpengraphImage() {
         <div
           style={{
             display: "flex",
+            flexDirection: "column",
             flex: 1,
             alignItems: "center",
             justifyContent: "center",
+            gap: 22,
             background: PANEL,
             border: `1px solid ${HAIRLINE}`,
             borderRadius: 30,
           }}
         >
-          <div style={{ display: "flex", gap: GAP }}>
-            {Array.from({ length: COLS }, (_col, col) => (
-              <div key={col} style={{ display: "flex", flexDirection: "column", gap: GAP }}>
-                {Array.from({ length: ROWS }, (_row, row) => (
-                  <div
-                    key={row}
-                    style={{
-                      width: CELL,
-                      height: CELL,
-                      borderRadius: RADIUS,
-                      background:
-                        col === LIT_COL && row === LIT_ROW ? CELL_ON : CELL_OFF,
-                    }}
-                  />
-                ))}
-              </div>
-            ))}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: 92,
+              height: 92,
+              borderRadius: 26,
+              background: BEZEL,
+              color: "#f8f8f4",
+              fontSize: 64,
+              fontWeight: 600,
+              letterSpacing: "-0.08em",
+            }}
+          >
+            B<span style={{ color: "#5bd79c", fontSize: 34 }}>.</span>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              color: "#f8f8f4",
+              fontSize: 64,
+              fontWeight: 600,
+              letterSpacing: "-0.07em",
+            }}
+          >
+            Brandon.dev
+          </div>
+          <div
+            style={{
+              display: "flex",
+              color: "#c2c2ba",
+              fontSize: 25,
+            }}
+          >
+            Diseño y desarrollo web a medida
           </div>
         </div>
       </div>

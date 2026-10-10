@@ -7,8 +7,9 @@ import {
   ProjectQuestions,
   ScrollReveal,
 } from "@/components/site/landing-interactions";
+import { PortfolioGrid } from "@/components/site/portfolio-grid";
 
-const whatsappUrl = "https://wa.me/5491151382047?text=Hola%20Brandon%2C%20quiero%20hablar%20sobre%20un%20proyecto%20web.";
+const instagramUrl = "https://www.instagram.com/brandon.vkc/";
 
 const services = [
   {
@@ -38,17 +39,16 @@ const steps = [
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-1 p-3 sm:p-5">
+    <div className="flex min-h-screen flex-1 p-2 sm:p-5">
       <div className="landing-panel mat-panel flex min-h-0 flex-1 flex-col overflow-hidden rounded-[20px]">
-        <header className="flex h-12 shrink-0 items-center gap-4 border-b border-hairline px-5">
+        <header className="flex h-12 shrink-0 items-center gap-3 border-b border-hairline px-3 sm:gap-4 sm:px-5">
           <div className="flex items-center gap-2">
-            <div className="w-fit origin-left scale-[1.1]">
-              <BrandMark />
-            </div>
+            <BrandMark />
             <span className="text-[13px] font-medium tracking-[-0.04em] text-ink">Brandon.dev</span>
           </div>
           <span className="flex-1" />
-          <nav aria-label="Navegación principal" className="mr-2 hidden items-center gap-5 text-[12.5px] text-ink-3 sm:flex">
+          <nav aria-label="Navegación principal" className="mr-2 hidden items-center gap-4 text-[12.5px] text-ink-3 lg:flex">
+            <a href="#portfolio" className="inline-flex min-h-11 items-center hover:text-ink">Portfolio</a>
             <a href="#servicios" className="inline-flex min-h-11 items-center hover:text-ink">Servicios</a>
             <a href="#proceso" className="inline-flex min-h-11 items-center hover:text-ink">Proceso</a>
             <a href="#preguntas" className="inline-flex min-h-11 items-center hover:text-ink">Preguntas</a>
@@ -57,48 +57,60 @@ export default function Home() {
           <ThemeToggle />
         </header>
 
-        <main className="flex-1 px-6 sm:px-12">
+        <nav
+          aria-label="Navegación móvil"
+          className="no-bar flex shrink-0 gap-1 overflow-x-auto border-b border-hairline px-2 py-1.5 text-[12px] text-ink-3 lg:hidden"
+        >
+          <a href="#portfolio" className="inline-flex min-h-10 shrink-0 items-center rounded-[7px] px-3 hover:bg-[var(--sub)] hover:text-ink">Portfolio</a>
+          <a href="#servicios" className="inline-flex min-h-10 shrink-0 items-center rounded-[7px] px-3 hover:bg-[var(--sub)] hover:text-ink">Servicios</a>
+          <a href="#proceso" className="inline-flex min-h-10 shrink-0 items-center rounded-[7px] px-3 hover:bg-[var(--sub)] hover:text-ink">Proceso</a>
+          <a href="#preguntas" className="inline-flex min-h-10 shrink-0 items-center rounded-[7px] px-3 hover:bg-[var(--sub)] hover:text-ink">Preguntas</a>
+          <a href="#contacto" className="inline-flex min-h-10 shrink-0 items-center rounded-[7px] px-3 hover:bg-[var(--sub)] hover:text-ink">Contacto</a>
+        </nav>
+
+        <main className="flex-1 px-4 sm:px-8 lg:px-12">
           <div className="mx-auto w-full max-w-[1100px]">
-            <section aria-label="Intro" className="py-10 sm:py-20">
-              <div className="grid items-center gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10">
+            <section aria-label="Intro" className="py-9 sm:py-16 lg:py-20">
+              <div className="grid items-center gap-9 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10">
                 <ScrollReveal>
-                  <div className="inline-flex items-center gap-2 rounded-full border border-hairline bg-white/60 px-2.5 py-1.5 text-[10.5px] uppercase tracking-[0.14em] text-ink-3 dark:bg-white/5">
+                  <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-hairline bg-white/60 px-2.5 py-1.5 text-[10px] uppercase tracking-[0.1em] text-ink-3 dark:bg-white/5 sm:text-[10.5px] sm:tracking-[0.14em]">
                     <span className="h-1.5 w-1.5 rounded-full bg-[var(--moss)]" />
-                    Desarrollador web · Buenos Aires
+                    Diseño y desarrollo web
                   </div>
 
-                  <h1 className="mt-6 max-w-[12ch] text-balance text-[40px] font-medium leading-[0.92] tracking-[-0.06em] text-ink sm:text-[58px] lg:text-[72px]">
-                    <TextReveal text="Tu próxima web empieza con una buena charla." maxDuration={1.2} className="text-[var(--ink)] dark:text-[var(--ink)]" />
+                  <h1 className="mt-6 max-w-[12ch] text-balance text-[clamp(2.65rem,10.5vw,4.5rem)] font-medium leading-[0.94] tracking-[-0.065em] text-ink">
+                    <TextReveal text="Ideas que se convierten en experiencias web." maxDuration={0.95} className="text-[var(--ink)] dark:text-[var(--ink)]" />
                   </h1>
 
-                  <p className="mt-6 max-w-[52ch] text-[15px] leading-[1.8] text-ink-2 sm:text-[17px]">
-                    Soy Brandon. Diseño y desarrollo sitios web para personas y negocios que quieren contar mejor lo que hacen y conectar con más clientes.
+                  <p className="mt-5 max-w-[52ch] text-[14px] leading-[1.8] text-ink-2 sm:mt-6 sm:text-[17px]">
+                    Soy Brandon. Diseño y desarrollo sitios, tiendas y aplicaciones web para personas y negocios que quieren llevar sus ideas más lejos.
                   </p>
 
-                  <div className="mt-8 flex flex-wrap items-center gap-3">
+                  <div className="mt-7 flex flex-wrap items-center gap-3 sm:mt-8">
                     <a
-                      href={whatsappUrl}
+                      href={instagramUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="press inline-flex h-10 items-center rounded-[10px] px-4 text-[12.5px] font-medium sm:h-11 sm:px-5 sm:text-[13px]"
+                      className="press inline-flex min-h-11 items-center rounded-[10px] px-4 text-[12.5px] font-medium sm:px-5 sm:text-[13px]"
                       style={{ background: "var(--ink)", color: "var(--panel)" }}
                     >
-                      Escribime por WhatsApp
+                      Hablemos por Instagram
+                      <span aria-hidden="true" className="ml-2">↗</span>
                     </a>
                     <a
-                      href="#contacto"
-                      className="mat-cap press inline-flex h-10 items-center rounded-[10px] border border-hairline px-4 text-[12.5px] font-medium text-ink-2 hover:text-ink sm:h-11 sm:px-5 sm:text-[13px]"
+                      href="#portfolio"
+                      className="mat-cap press inline-flex min-h-11 items-center rounded-[10px] border border-hairline px-4 text-[12.5px] font-medium text-ink-2 hover:text-ink sm:px-5 sm:text-[13px]"
                     >
-                      Hablemos
+                      Ver mis proyectos
                     </a>
                   </div>
 
-                  <div className="mt-8 flex flex-wrap items-center gap-4 text-[12px] text-ink-3 sm:text-[13px]">
+                  <div className="mt-7 flex flex-wrap items-center gap-x-3 gap-y-2 text-[11px] text-ink-3 sm:mt-8 sm:gap-4 sm:text-[13px]">
                     <span>Trato directo</span>
                     <span className="text-hairline">•</span>
-                    <span>Diseño premium</span>
+                    <span>Diseño a medida</span>
                     <span className="text-hairline">•</span>
-                    <span>Entrega clara</span>
+                    <span>Webs responsive</span>
                   </div>
                 </ScrollReveal>
 
@@ -109,6 +121,23 @@ export default function Home() {
             <div className="pb-10 sm:pb-14">
               <CapabilitiesMarquee />
             </div>
+
+            <section id="portfolio" aria-labelledby="portfolio-title" className="landing-divider scroll-mt-6 py-12 sm:py-16 lg:py-20">
+              <ScrollReveal className="mb-7 flex flex-wrap items-end justify-between gap-4 sm:mb-9">
+                <div>
+                  <p className="meta text-ink-3">TRABAJO REAL</p>
+                  <h2 id="portfolio-title" className="mt-2 text-[30px] font-medium leading-[1.05] tracking-[-0.055em] text-ink sm:text-[36px]">
+                    Proyectos que ya están en la web.
+                  </h2>
+                  <p className="mt-3 max-w-[52ch] text-[13.5px] leading-[1.75] text-ink-2 sm:text-[14px]">
+                    Aplicaciones, tiendas, invitaciones y sitios hechos para resolver necesidades distintas.
+                  </p>
+                </div>
+                <span className="meta text-ink-3">9 PROYECTOS · ABRIR EN VIVO ↗</span>
+              </ScrollReveal>
+
+              <PortfolioGrid />
+            </section>
 
             <section id="servicios" aria-labelledby="servicios-title" className="landing-divider py-14 sm:py-20">
               <ScrollReveal className="mb-8 flex flex-wrap items-end justify-between gap-5">
@@ -188,9 +217,9 @@ export default function Home() {
                   </p>
 
                   <div className="mt-6 space-y-3">
-                    <a href={whatsappUrl} target="_blank" rel="noreferrer" className="mat-row flex min-h-12 items-center justify-between gap-3 rounded-[12px] px-4 py-3 text-[13px] text-ink hover:text-ink">
-                      <span>WhatsApp</span>
-                      <span className="tnum text-ink-2">+54 9 11 5138-2047</span>
+                    <a href={instagramUrl} target="_blank" rel="noreferrer" className="mat-row flex min-h-12 items-center justify-between gap-3 rounded-[12px] px-4 py-3 text-[13px] text-ink hover:text-ink">
+                      <span>Instagram</span>
+                      <span className="text-ink-2">@brandon.vkc</span>
                       <span aria-hidden="true">↗</span>
                     </a>
                   </div>
@@ -202,19 +231,15 @@ export default function Home() {
                   <div className="mb-4 flex items-center justify-between gap-3 border-b border-hairline pb-4">
                     <div>
                       <p className="meta text-ink-3">HABLEMOS DE TU PROYECTO</p>
-                      <p className="mt-2 text-[22px] font-medium tracking-[-0.04em] text-ink">Un mensaje es suficiente</p>
-                    </div>
-                    <div className="flex shrink-0 items-center gap-2 rounded-full border border-hairline px-2.5 py-1 text-[10.5px] text-ink-3">
-                      <span className="size-1.5 rounded-full bg-[var(--moss)]" />
-                      Disponible
+                      <p className="mt-2 text-[22px] font-medium tracking-[-0.04em] text-ink">Hablemos de tu idea</p>
                     </div>
                   </div>
 
                   <p className="max-w-[42ch] text-[14px] leading-[1.8] text-ink-2">
-                    No hace falta tener todo definido. Escribime qué querés crear, mejorar o resolver, y te respondo para dar el primer paso.
+                    No hace falta tener todo definido. Escribime por Instagram qué querés crear, mejorar o resolver, y vemos juntos cómo empezar.
                   </p>
-                  <a href={whatsappUrl} target="_blank" rel="noreferrer" className="press mt-6 inline-flex min-h-11 items-center gap-3 rounded-[10px] px-4 text-[12.5px] font-medium sm:px-5 sm:text-[13px]" style={{ background: "var(--ink)", color: "var(--panel)" }}>
-                    Iniciar conversación
+                  <a href={instagramUrl} target="_blank" rel="noreferrer" className="press mt-6 inline-flex min-h-11 items-center gap-3 rounded-[10px] px-4 text-[12.5px] font-medium sm:px-5 sm:text-[13px]" style={{ background: "var(--ink)", color: "var(--panel)" }}>
+                    Escribime en Instagram
                     <span aria-hidden="true">↗</span>
                   </a>
                 </div>
@@ -224,12 +249,13 @@ export default function Home() {
           </div>
         </main>
 
-        <footer className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-hairline px-6 py-5 text-[11.5px] leading-relaxed text-ink-3 sm:px-12">
+        <footer className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-hairline px-4 py-4 text-[11.5px] leading-relaxed text-ink-3 sm:px-8 sm:py-5 lg:px-12">
           <div className="flex items-center gap-2">
+            <BrandMark />
             <span className="text-[13px] font-medium tracking-[-0.04em] text-ink">Brandon.dev</span>
           </div>
           <div className="flex items-center gap-5">
-            <a href={whatsappUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center hover:text-ink">WhatsApp</a>
+            <a href={instagramUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center hover:text-ink">@brandon.vkc ↗</a>
           </div>
         </footer>
       </div>

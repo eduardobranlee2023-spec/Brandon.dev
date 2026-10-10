@@ -97,6 +97,7 @@
 
 html {
   color-scheme: light;
+  scroll-behavior: smooth;
 }
 
 html.dark {
@@ -295,6 +296,10 @@ html.dark .shiki span {
 /* ── reduced motion ────────────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   *,
   *::before,
   *::after {

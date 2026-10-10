@@ -1,30 +1,17 @@
-const COLS = 10;
-const ROWS = 8;
-
-const LIT_COL = 3;
-const LIT_ROW = 4;
-
 export function BrandMark() {
   return (
-    <div
-      className="grid w-fit grid-flow-col gap-[2px]"
-      style={{ gridTemplateRows: `repeat(${ROWS}, 5px)` }}
-      aria-hidden
+    <svg
+      aria-hidden="true"
+      className="size-7 shrink-0"
+      fill="none"
+      viewBox="0 0 32 32"
     >
-      {Array.from({ length: COLS }, (_col, col) =>
-        Array.from({ length: ROWS }, (_row, row) => (
-          <span
-            key={`${col}-${row}`}
-            className="block size-[5px] rounded-[1.5px]"
-            style={{
-              background:
-                col === LIT_COL && row === LIT_ROW
-                  ? "var(--accent)"
-                  : "color-mix(in oklab, var(--ink) 11%, transparent)",
-            }}
-          />
-        )),
-      )}
-    </div>
+      <rect width="32" height="32" rx="9" fill="var(--ink)" />
+      <path
+        d="M10 7.5h8.3a6.2 6.2 0 0 1 4.2 10.8 6.8 6.8 0 0 1-4.7 11.7H10v-22.5Zm4.2 4v5.8h4a2.9 2.9 0 1 0 0-5.8h-4Zm0 9.8V26h3.6a2.4 2.4 0 1 0 0-4.7h-3.6Z"
+        fill="var(--panel)"
+      />
+      <circle cx="24.5" cy="7.5" r="2.5" fill="var(--moss)" />
+    </svg>
   );
 }

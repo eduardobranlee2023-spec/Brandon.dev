@@ -69,7 +69,7 @@ const questions: AccordionItem[] = [
   {
     id: "quote",
     title: "¿Cómo pedimos un presupuesto?",
-    content: <p>Escribime por WhatsApp con una descripción de tu proyecto. Con el alcance claro, te preparo una propuesta.</p>,
+    content: <p>Escribime por Instagram con una descripción de tu proyecto. Con el alcance claro, te preparo una propuesta.</p>,
   },
 ];
 
@@ -87,10 +87,10 @@ export function ScrollReveal({
   return (
     <motion.div
       className={`docs-enter ${className}`}
-      initial={reduced ? false : { opacity: 0, y: 24, filter: "blur(7px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      viewport={{ once: true, amount: 0.16, margin: "0px 0px -48px 0px" }}
-      transition={reduced ? { duration: 0 } : { duration: 0.68, ease: EASE, delay }}
+      initial={reduced ? false : { opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.12, margin: "0px 0px -32px 0px" }}
+      transition={reduced ? { duration: 0 } : { duration: 0.52, ease: EASE, delay }}
     >
       {children}
     </motion.div>

@@ -4,10 +4,10 @@ import { Fragment, useMemo, useRef } from "react";
 import { motion, useInView, useReducedMotion } from "motion/react";
 
 const EASE = [0.23, 1, 0.32, 1] as const;
-const DURATION = 0.6;
+const DURATION = 0.48;
 
-const HIDDEN = { opacity: 0, y: 10, filter: "blur(8px)" } as const;
-const SHOWN = { opacity: 1, y: 0, filter: "blur(0px)" } as const;
+const HIDDEN = { opacity: 0, y: 8 } as const;
+const SHOWN = { opacity: 1, y: 0 } as const;
 
 export type TextRevealSplit = "word" | "character";
 
@@ -36,8 +36,8 @@ export type UseTextRevealOptions = {
 export function useTextReveal<T extends HTMLElement = HTMLSpanElement>({
   text,
   by = "word",
-  stagger = 0.055,
-  maxDuration = 1.6,
+  stagger = 0.04,
+  maxDuration = 1.1,
   startOnView = true,
   play = true,
   once = true,
@@ -98,8 +98,8 @@ export type TextRevealProps = UseTextRevealOptions & {
 export function TextReveal({
   text,
   by = "word",
-  stagger = 0.055,
-  maxDuration = 1.6,
+  stagger = 0.04,
+  maxDuration = 1.1,
   startOnView = true,
   play = true,
   once = true,

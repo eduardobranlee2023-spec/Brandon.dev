@@ -80,7 +80,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
-        <Script id="interior-theme" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <Script id="brandon-theme" strategy="beforeInteractive" dangerouslySetInnerHTML={{ __html: themeScript }} />
         <link rel="alternate" type="text/plain" href={`${SITE}/llms.txt`} title="LLM reference" />
         <noscript>
           <style>{`.docs-enter { opacity: 1 !important; transform: none !important; filter: none !important; }`}</style>
