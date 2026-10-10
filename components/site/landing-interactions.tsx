@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Accordion, type AccordionItem } from "@/components/interior/accordion";
 import { SplineScene } from "@/components/ui/splite";
 import {
   LogoMarquee,
   type LogoMarqueeItem,
 } from "@/components/interior/logo-marquee";
-import { motion, useReducedMotion } from "motion/react";
+import { motion, useInView, useReducedMotion } from "motion/react";
+import type { Application } from "@splinetool/runtime";
 import type { ReactNode } from "react";
 
 const EASE = [0.23, 1, 0.32, 1] as const;
@@ -80,7 +81,32 @@ export function CapabilitiesMarquee() {
 
 export function PortfolioPreview() {
   const reduced = useReducedMotion() === true;
+  const [sceneReady, setSceneReady] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const [spline, setSpline] = useState<Application | null>(null);
+  const sceneRef = useRef<HTMLDivElement>(null);
+  const sceneVisible = useInView(sceneRef, { amount: 0.1 });
+
+  useEffect(() => {
+    if (reduced) return;
+
+    const timeout = window.setTimeout(() => setSceneReady(true), 300);
+    return () => window.clearTimeout(timeout);
+  }, [reduced]);
+
+  useEffect(() => {
+    if (!spline) return;
+
+    const updatePlayback = () => {
+      const shouldPlay = sceneVisible && !document.hidden;
+      if (shouldPlay && spline.isStopped) spline.play();
+      if (!shouldPlay && !spline.isStopped) spline.stop();
+    };
+
+    updatePlayback();
+    document.addEventListener("visibilitychange", updatePlayback);
+    return () => document.removeEventListener("visibilitychange", updatePlayback);
+  }, [sceneVisible, spline]);
 
   return (
     <motion.div
@@ -111,15 +137,18 @@ export function PortfolioPreview() {
             "radial-gradient(260px circle at var(--spot-x, 50%) var(--spot-y, 35%), rgba(91, 215, 156, 0.12), transparent 78%), linear-gradient(145deg, #15221c 0%, #111613 60%, #1b1a16 100%)",
         }}
       >
-        {!reduced ? (
-          <div className="absolute inset-0" aria-label="Escena 3D interactiva de Spline">
+        {!reduced && sceneReady ? (
+          <div ref={sceneRef} className="absolute inset-0" aria-label="Escena 3D interactiva de Spline">
             <SplineScene
               scene={SPLINE_SCENE}
               className="h-full w-full"
-              onLoad={() => setLoaded(true)}
+              onLoad={(application) => {
+                setSpline(application);
+                setLoaded(true);
+              }}
             />
           </div>
-        ) : (
+        ) : reduced ? (
           <div
             aria-hidden="true"
             className="absolute inset-0 grid place-items-center overflow-hidden"
@@ -138,7 +167,7 @@ export function PortfolioPreview() {
               <span className="absolute left-1/2 top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-200 shadow-[0_0_28px_8px_rgba(91,215,156,0.35)]" />
             </motion.div>
           </div>
-        )}
+        ) : null}
 
         {!loaded && !reduced ? (
           <div className="pointer-events-none absolute inset-0 z-10 grid place-items-center">
