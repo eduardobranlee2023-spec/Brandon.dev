@@ -1,6 +1,7 @@
 import { ThemeToggle } from "@/components/site/theme-toggle";
 import { BrandMark } from "@/components/site/brand-mark";
 import { TextReveal } from "@/components/interior/text-reveal";
+import Image from "next/image";
 import {
   CapabilitiesMarquee,
   PortfolioPreview,
@@ -79,12 +80,34 @@ export default function Home() {
                   </div>
 
                   <h1 className="mt-6 max-w-[12ch] text-balance text-[clamp(2.65rem,10.5vw,4.5rem)] font-medium leading-[0.94] tracking-[-0.065em] text-ink">
-                    <TextReveal text="Ideas que se convierten en experiencias web." maxDuration={0.95} className="text-[var(--ink)] dark:text-[var(--ink)]" />
+                    <TextReveal text="Ideas que se convierten en experiencias web." maxDuration={1.2} className="text-[var(--ink)] dark:text-[var(--ink)]" />
                   </h1>
 
                   <p className="mt-5 max-w-[52ch] text-[14px] leading-[1.8] text-ink-2 sm:mt-6 sm:text-[17px]">
-                    Soy Brandon. Diseño y desarrollo sitios, tiendas y aplicaciones web para personas y negocios que quieren llevar sus ideas más lejos.
+                    Diseño y desarrollo sitios, tiendas y aplicaciones web para personas y negocios que quieren llevar sus ideas más lejos.
                   </p>
+
+                  <a
+                    href={instagramUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group mt-5 inline-flex min-h-11 items-center gap-3 rounded-full pr-3 transition-colors hover:bg-[var(--sub)] sm:mt-6"
+                    aria-label="Conoce a Brandon en Instagram, se abre en una pestaña nueva"
+                  >
+                    <Image
+                      src="/IMG_20250730_164133.jpg"
+                      alt="Retrato de Brandon"
+                      width={48}
+                      height={48}
+                      sizes="48px"
+                      className="size-11 rounded-full border border-hairline object-cover object-[67%_32%] shadow-sm"
+                    />
+                    <span className="text-left">
+                      <span className="block text-[12px] font-medium text-ink">Brandon</span>
+                      <span className="mt-0.5 block text-[11px] text-ink-3 group-hover:text-ink-2">@brandon.vkc</span>
+                    </span>
+                    <span aria-hidden="true" className="ml-1 text-[12px] text-ink-3">↗</span>
+                  </a>
 
                   <div className="mt-7 flex flex-wrap items-center gap-3 sm:mt-8">
                     <a
