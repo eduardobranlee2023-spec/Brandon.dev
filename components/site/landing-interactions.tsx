@@ -10,6 +10,12 @@ import { motion, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
 
 const EASE = [0.23, 1, 0.32, 1] as const;
+const PREVIEW_SPRING = {
+  type: "spring",
+  stiffness: 460,
+  damping: 38,
+  mass: 0.8,
+} as const;
 
 const capabilities: LogoMarqueeItem[] = [
   { id: "design", label: "Diseño con intención" },
@@ -159,7 +165,17 @@ export function PortfolioPreview() {
                 className="relative mx-auto mt-5 grid aspect-[0.86] w-[min(100%,190px)] grid-rows-[auto_1fr_auto] gap-3 rounded-[7px] p-3 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.5)] sm:mt-0 sm:w-full"
                 style={{ background: preview.accent, color: preview.ink }}
                 animate={reduced ? undefined : { y: [0, -5, 0] }}
-                transition={reduced ? undefined : { duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+                transition={
+                  reduced
+                    ? undefined
+                    : {
+                        y: { duration: 5.5, repeat: Infinity, ease: "easeInOut" },
+                        scale: PREVIEW_SPRING,
+                        rotate: PREVIEW_SPRING,
+                      }
+                }
+                whileHover={reduced ? undefined : { scale: 1.025, rotate: -1 }}
+                whileTap={reduced ? undefined : { scale: 0.99 }}
               >
                 <div className="flex items-center justify-between border-b border-current/15 pb-2">
                   <span className="meta">TU MARCA</span>

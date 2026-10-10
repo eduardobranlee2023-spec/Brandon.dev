@@ -4,6 +4,13 @@ import { ArrowUpRight } from "@phosphor-icons/react";
 import { motion, useReducedMotion } from "motion/react";
 import { ScrollReveal } from "@/components/site/landing-interactions";
 
+const PRESS_SPRING = {
+  type: "spring",
+  stiffness: 520,
+  damping: 34,
+  mass: 0.45,
+} as const;
+
 const projects = [
   {
     name: "Personal Trader",
@@ -96,26 +103,44 @@ export function PortfolioGrid() {
             rel="noreferrer"
             aria-label={`Abrir ${project.name}, ${project.type} (se abre en una pestaña nueva)`}
             className="group mat-panel flex h-full flex-col overflow-hidden rounded-[14px] transition-shadow duration-300 hover:shadow-[var(--shadow-float)]"
-            whileHover={reduced ? undefined : { y: -5 }}
-            whileTap={reduced ? undefined : { scale: 0.99 }}
-            transition={{ duration: 0.24, ease: [0.23, 1, 0.32, 1] }}
+            initial="rest"
+            variants={{
+              rest: { y: 0, scale: 1 },
+              hover: { y: -5, scale: 1.01 },
+            }}
+            whileHover={reduced ? undefined : "hover"}
+            whileFocus={reduced ? undefined : "hover"}
+            whileTap={reduced ? undefined : { y: 0, scale: 0.985 }}
+            transition={reduced ? { duration: 0 } : PRESS_SPRING}
           >
             <div
               className="relative flex aspect-[1.7] items-end justify-between overflow-hidden p-5 sm:p-6"
               style={{ backgroundColor: project.accent }}
             >
-              <span
+              <motion.span
                 aria-hidden="true"
-                className="pointer-events-none absolute -right-5 -top-14 select-none text-[190px] font-medium leading-none tracking-[-0.11em] text-black/[0.07] transition-transform duration-500 group-hover:scale-105"
+                className="pointer-events-none absolute -right-5 -top-14 select-none text-[190px] font-medium leading-none tracking-[-0.11em] text-black/[0.07]"
+                variants={{
+                  rest: { scale: 1, x: 0 },
+                  hover: { scale: 1.06, x: -5 },
+                }}
+                transition={reduced ? { duration: 0 } : PRESS_SPRING}
               >
                 {project.mark}
-              </span>
+              </motion.span>
               <span className="relative rounded-full border border-black/15 bg-white/55 px-3 py-1.5 text-[10px] font-medium text-black/65 backdrop-blur-sm">
                 {project.type}
               </span>
-              <span className="relative grid size-10 place-items-center rounded-full bg-black/10 text-black transition-transform duration-300 group-hover:rotate-45">
+              <motion.span
+                className="relative grid size-10 place-items-center rounded-full bg-black/10 text-black"
+                variants={{
+                  rest: { rotate: 0, scale: 1 },
+                  hover: { rotate: 45, scale: 1.08 },
+                }}
+                transition={reduced ? { duration: 0 } : PRESS_SPRING}
+              >
                 <ArrowUpRight size={19} weight="regular" aria-hidden="true" />
-              </span>
+              </motion.span>
             </div>
 
             <div className="flex flex-1 flex-col p-5 sm:p-6">
@@ -130,11 +155,17 @@ export function PortfolioGrid() {
               </p>
               <span className="mt-5 inline-flex min-h-11 items-center gap-2 text-[12px] font-medium text-ink">
                 Ver proyecto
-                <ArrowUpRight
-                  size={15}
+                <motion.span
                   aria-hidden="true"
-                  className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                />
+                  className="inline-flex"
+                  variants={{
+                    rest: { x: 0, y: 0 },
+                    hover: { x: 2, y: -2 },
+                  }}
+                  transition={reduced ? { duration: 0 } : PRESS_SPRING}
+                >
+                  <ArrowUpRight size={15} />
+                </motion.span>
               </span>
             </div>
           </motion.a>
