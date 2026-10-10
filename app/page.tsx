@@ -11,6 +11,8 @@ import {
 import { PortfolioGrid } from "@/components/site/portfolio-grid";
 
 const instagramUrl = "https://www.instagram.com/brandon.vkc/";
+const whatsappUrl =
+  "https://wa.me/5491151382047?text=Hola%20Brandon%2C%20vi%20tu%20landing%20y%20me%20gustar%C3%ADa%20hablar%20sobre%20mi%20proyecto.";
 
 const services = [
   {
@@ -111,18 +113,27 @@ export default function Home() {
 
                   <div className="mt-7 flex flex-wrap items-center gap-3 sm:mt-8">
                     <a
-                      href={instagramUrl}
+                      href={whatsappUrl}
                       target="_blank"
                       rel="noreferrer"
                       className="press inline-flex min-h-11 items-center rounded-[10px] px-4 text-[12.5px] font-medium sm:px-5 sm:text-[13px]"
                       style={{ background: "var(--ink)", color: "var(--panel)" }}
                     >
-                      Hablemos por Instagram
+                      Hablemos por WhatsApp
+                      <span aria-hidden="true" className="ml-2">↗</span>
+                    </a>
+                    <a
+                      href={instagramUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mat-cap press inline-flex min-h-11 items-center rounded-[10px] border border-hairline px-4 text-[12.5px] font-medium text-ink-2 hover:text-ink sm:px-5 sm:text-[13px]"
+                    >
+                      Escribime por Instagram
                       <span aria-hidden="true" className="ml-2">↗</span>
                     </a>
                     <a
                       href="#portfolio"
-                      className="mat-cap press inline-flex min-h-11 items-center rounded-[10px] border border-hairline px-4 text-[12.5px] font-medium text-ink-2 hover:text-ink sm:px-5 sm:text-[13px]"
+                      className="inline-flex min-h-11 items-center px-2 text-[12.5px] font-medium text-ink-2 hover:text-ink sm:text-[13px]"
                     >
                       Ver mis proyectos
                     </a>
@@ -240,6 +251,11 @@ export default function Home() {
                   </p>
 
                   <div className="mt-6 space-y-3">
+                    <a href={whatsappUrl} target="_blank" rel="noreferrer" className="mat-row flex min-h-12 items-center justify-between gap-3 rounded-[12px] px-4 py-3 text-[13px] text-ink hover:text-ink">
+                      <span>WhatsApp</span>
+                      <span className="text-ink-2">+54 9 11 5138-2047</span>
+                      <span aria-hidden="true">↗</span>
+                    </a>
                     <a href={instagramUrl} target="_blank" rel="noreferrer" className="mat-row flex min-h-12 items-center justify-between gap-3 rounded-[12px] px-4 py-3 text-[13px] text-ink hover:text-ink">
                       <span>Instagram</span>
                       <span className="text-ink-2">@brandon.vkc</span>
@@ -259,10 +275,14 @@ export default function Home() {
                   </div>
 
                   <p className="max-w-[42ch] text-[14px] leading-[1.8] text-ink-2">
-                    No hace falta tener todo definido. Escribime por Instagram qué querés crear, mejorar o resolver, y vemos juntos cómo empezar.
+                    No hace falta tener todo definido. Escribime por WhatsApp qué querés crear, mejorar o resolver, y vemos juntos cómo empezar. Si preferís, también podés contactarme por Instagram.
                   </p>
-                  <a href={instagramUrl} target="_blank" rel="noreferrer" className="press mt-6 inline-flex min-h-11 items-center gap-3 rounded-[10px] px-4 text-[12.5px] font-medium sm:px-5 sm:text-[13px]" style={{ background: "var(--ink)", color: "var(--panel)" }}>
-                    Escribime en Instagram
+                  <a href={whatsappUrl} target="_blank" rel="noreferrer" className="press mt-6 inline-flex min-h-11 items-center gap-3 rounded-[10px] px-4 text-[12.5px] font-medium sm:px-5 sm:text-[13px]" style={{ background: "var(--ink)", color: "var(--panel)" }}>
+                    Escribime por WhatsApp
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                  <a href={instagramUrl} target="_blank" rel="noreferrer" className="mat-cap press mt-3 inline-flex min-h-11 items-center gap-3 rounded-[10px] border border-hairline px-4 text-[12.5px] font-medium text-ink-2 hover:text-ink sm:px-5 sm:text-[13px]">
+                    Contactame por Instagram
                     <span aria-hidden="true">↗</span>
                   </a>
                 </div>
@@ -278,6 +298,7 @@ export default function Home() {
             <span className="text-[13px] font-medium tracking-[-0.04em] text-ink">Brandon.dev</span>
           </div>
           <div className="flex items-center gap-5">
+            <a href={whatsappUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center hover:text-ink">WhatsApp ↗</a>
             <a href={instagramUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center hover:text-ink">@brandon.vkc ↗</a>
           </div>
         </footer>

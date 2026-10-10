@@ -37,7 +37,7 @@ const questions: AccordionItem[] = [
   {
     id: "quote",
     title: "¿Cómo pedimos un presupuesto?",
-    content: <p>Escribime por Instagram con una descripción de tu proyecto. Con el alcance claro, te preparo una propuesta.</p>,
+    content: <p>Escribime por WhatsApp con una descripción de tu proyecto. Con el alcance claro, te preparo una propuesta.</p>,
   },
 ];
 
