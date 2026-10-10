@@ -9,9 +9,15 @@ type SplineSceneProps = {
   scene: string;
   className?: string;
   onLoad?: SplineProps["onLoad"];
+  renderOnDemand?: SplineProps["renderOnDemand"];
 };
 
-export function SplineScene({ scene, className, onLoad }: SplineSceneProps) {
+export function SplineScene({
+  scene,
+  className,
+  onLoad,
+  renderOnDemand = true,
+}: SplineSceneProps) {
   return (
     <Suspense
       fallback={
@@ -24,7 +30,12 @@ export function SplineScene({ scene, className, onLoad }: SplineSceneProps) {
         </div>
       }
     >
-      <Spline scene={scene} className={className} onLoad={onLoad} />
+      <Spline
+        scene={scene}
+        className={className}
+        onLoad={onLoad}
+        renderOnDemand={renderOnDemand}
+      />
     </Suspense>
   );
 }

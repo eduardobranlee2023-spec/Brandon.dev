@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Accordion, type AccordionItem } from "@/components/interior/accordion";
 import { SplineScene } from "@/components/ui/splite";
 import {
@@ -80,15 +80,36 @@ export function CapabilitiesMarquee() {
 
 export function PortfolioPreview() {
   const reduced = useReducedMotion() === true;
-  const [sceneReady, setSceneReady] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const sceneRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (reduced) return;
+    if (!loaded) return;
 
-    const timeout = window.setTimeout(() => setSceneReady(true), 300);
-    return () => window.clearTimeout(timeout);
-  }, [reduced]);
+    const canvas = sceneRef.current?.querySelector("canvas");
+    if (!canvas) return;
+
+    const forwardPointerMove = (event: PointerEvent) => {
+      if (event.target instanceof Node && canvas.contains(event.target)) {
+        return;
+      }
+
+      canvas.dispatchEvent(
+        new PointerEvent("pointermove", {
+          bubbles: true,
+          clientX: event.clientX,
+          clientY: event.clientY,
+          pointerId: event.pointerId,
+          pointerType: event.pointerType,
+          isPrimary: event.isPrimary,
+          buttons: event.buttons,
+        }),
+      );
+    };
+
+    window.addEventListener("pointermove", forwardPointerMove);
+    return () => window.removeEventListener("pointermove", forwardPointerMove);
+  }, [loaded]);
 
   return (
     <motion.div
@@ -119,36 +140,20 @@ export function PortfolioPreview() {
             "radial-gradient(260px circle at var(--spot-x, 50%) var(--spot-y, 35%), rgba(91, 215, 156, 0.12), transparent 78%), linear-gradient(145deg, #15221c 0%, #111613 60%, #1b1a16 100%)",
         }}
       >
-        {!reduced && sceneReady ? (
-          <div className="absolute inset-0" aria-label="Escena 3D interactiva de Spline">
-            <SplineScene
-              scene={SPLINE_SCENE}
-              className="h-full w-full"
-              onLoad={() => setLoaded(true)}
-            />
-          </div>
-        ) : reduced ? (
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 grid place-items-center overflow-hidden"
-          >
-            <motion.div
-              className="relative size-[min(58vw,250px)] rounded-[38%] border border-emerald-200/20 bg-[radial-gradient(circle_at_35%_30%,rgba(91,215,156,0.3),rgba(91,215,156,0.02)_65%)] shadow-[0_0_100px_-35px_rgba(91,215,156,0.35)]"
-              animate={reduced ? undefined : { rotate: 360 }}
-              transition={
-                reduced
-                  ? undefined
-                  : { duration: 28, ease: "linear", repeat: Infinity }
-              }
-            >
-              <span className="absolute inset-[14%] rounded-[42%] border border-white/10" />
-              <span className="absolute inset-[28%] rounded-full border border-emerald-100/20" />
-              <span className="absolute left-1/2 top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-200 shadow-[0_0_28px_8px_rgba(91,215,156,0.35)]" />
-            </motion.div>
-          </div>
-        ) : null}
+        <div
+          ref={sceneRef}
+          className="absolute inset-0"
+          aria-label="Escena 3D interactiva de Spline"
+        >
+          <SplineScene
+            scene={SPLINE_SCENE}
+            className="h-full w-full"
+            onLoad={() => setLoaded(true)}
+            renderOnDemand
+          />
+        </div>
 
-        {!loaded && !reduced ? (
+        {!loaded ? (
           <div className="pointer-events-none absolute inset-0 z-10 grid place-items-center">
             <span
               aria-label="Cargando escena 3D"
