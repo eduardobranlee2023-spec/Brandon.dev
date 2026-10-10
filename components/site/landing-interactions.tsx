@@ -1,14 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Accordion, type AccordionItem } from "@/components/interior/accordion";
 import { SplineScene } from "@/components/ui/splite";
 import {
   LogoMarquee,
   type LogoMarqueeItem,
 } from "@/components/interior/logo-marquee";
-import { motion, useInView, useReducedMotion } from "motion/react";
-import type { Application } from "@splinetool/runtime";
+import { motion, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
 
 const EASE = [0.23, 1, 0.32, 1] as const;
@@ -83,9 +82,6 @@ export function PortfolioPreview() {
   const reduced = useReducedMotion() === true;
   const [sceneReady, setSceneReady] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const [spline, setSpline] = useState<Application | null>(null);
-  const sceneRef = useRef<HTMLDivElement>(null);
-  const sceneVisible = useInView(sceneRef, { amount: 0.1 });
 
   useEffect(() => {
     if (reduced) return;
@@ -93,20 +89,6 @@ export function PortfolioPreview() {
     const timeout = window.setTimeout(() => setSceneReady(true), 300);
     return () => window.clearTimeout(timeout);
   }, [reduced]);
-
-  useEffect(() => {
-    if (!spline) return;
-
-    const updatePlayback = () => {
-      const shouldPlay = sceneVisible && !document.hidden;
-      if (shouldPlay && spline.isStopped) spline.play();
-      if (!shouldPlay && !spline.isStopped) spline.stop();
-    };
-
-    updatePlayback();
-    document.addEventListener("visibilitychange", updatePlayback);
-    return () => document.removeEventListener("visibilitychange", updatePlayback);
-  }, [sceneVisible, spline]);
 
   return (
     <motion.div
@@ -138,14 +120,11 @@ export function PortfolioPreview() {
         }}
       >
         {!reduced && sceneReady ? (
-          <div ref={sceneRef} className="absolute inset-0" aria-label="Escena 3D interactiva de Spline">
+          <div className="absolute inset-0" aria-label="Escena 3D interactiva de Spline">
             <SplineScene
               scene={SPLINE_SCENE}
               className="h-full w-full"
-              onLoad={(application) => {
-                setSpline(application);
-                setLoaded(true);
-              }}
+              onLoad={() => setLoaded(true)}
             />
           </div>
         ) : reduced ? (
@@ -206,15 +185,6 @@ export function PortfolioPreview() {
             Ver proyectos <span aria-hidden="true">↗</span>
           </a>
         </div>
-        <a
-          href="https://21st.dev/@serafimcloud/components/splite"
-          target="_blank"
-          rel="noreferrer"
-          className="absolute bottom-1 right-2 z-30 text-[9px] text-white/35 hover:text-white/70"
-          aria-label="Crédito de escena: componente Spline de Serafim en 21st.dev"
-        >
-          Scene by Serafim · 21st.dev
-        </a>
       </div>
     </motion.div>
   );
