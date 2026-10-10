@@ -1,21 +1,18 @@
 "use client";
 
+import { useState } from "react";
 import { Accordion, type AccordionItem } from "@/components/interior/accordion";
+import { SplineScene } from "@/components/ui/splite";
 import {
   LogoMarquee,
   type LogoMarqueeItem,
 } from "@/components/interior/logo-marquee";
-import { Tabs } from "@/components/interior/tabs";
 import { motion, useReducedMotion } from "motion/react";
 import type { ReactNode } from "react";
 
 const EASE = [0.23, 1, 0.32, 1] as const;
-const PREVIEW_SPRING = {
-  type: "spring",
-  stiffness: 460,
-  damping: 38,
-  mass: 0.8,
-} as const;
+const SPLINE_SCENE =
+  "https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode";
 
 const capabilities: LogoMarqueeItem[] = [
   { id: "design", label: "Diseño con intención" },
@@ -23,42 +20,6 @@ const capabilities: LogoMarqueeItem[] = [
   { id: "responsive", label: "Hecho para móvil" },
   { id: "motion", label: "Movimiento con propósito" },
   { id: "custom", label: "A medida, de principio a fin" },
-];
-
-const previews = {
-  services: {
-    label: "SITIO DE SERVICIOS",
-    headline: "Tu trabajo merece una buena presentación.",
-    detail: "Una propuesta clara. Un próximo paso sencillo.",
-    action: "Conocer el estudio",
-    background: "#d8ef91",
-    ink: "#183b37",
-    accent: "#f7f1e5",
-  },
-  shop: {
-    label: "TIENDA ONLINE",
-    headline: "Lo que hacés, listo para llegar más lejos.",
-    detail: "Productos al frente y una compra sin vueltas.",
-    action: "Explorar colección",
-    background: "#f3c47b",
-    ink: "#302514",
-    accent: "#f8f6ed",
-  },
-  portfolio: {
-    label: "PORTFOLIO PERSONAL",
-    headline: "Una página que habla con tu propia voz.",
-    detail: "Tu historia, tu trabajo y lo que viene después.",
-    action: "Ver proyectos",
-    background: "#cfe8e4",
-    ink: "#1a3938",
-    accent: "#f7f1e5",
-  },
-} as const;
-
-const previewTabs = [
-  { value: "services", label: "Servicios" },
-  { value: "shop", label: "Tienda" },
-  { value: "portfolio", label: "Portfolio" },
 ];
 
 const questions: AccordionItem[] = [
@@ -119,6 +80,7 @@ export function CapabilitiesMarquee() {
 
 export function PortfolioPreview() {
   const reduced = useReducedMotion() === true;
+  const [loaded, setLoaded] = useState(false);
 
   return (
     <motion.div
@@ -129,80 +91,102 @@ export function PortfolioPreview() {
     >
       <div className="mb-3 flex items-center justify-between gap-3 px-1">
         <span className="meta text-ink-3">UNA IDEA, DISTINTAS FORMAS</span>
-        <span className="meta text-[var(--moss)]">EXPLORÁ EL PREVIEW</span>
+        <span className="meta text-[var(--moss)]">ESCENA 3D · SPLINE</span>
       </div>
-      <Tabs
-        items={previewTabs}
-        defaultValue="services"
-        label="Explorar tipos de sitio web"
-        panelClassName="p-2 sm:p-3"
-        renderPanel={(value) => {
-          const preview = previews[value as keyof typeof previews];
-
-          return (
-            <div
-              className="relative isolate grid min-h-[300px] overflow-hidden rounded-[8px] p-5 sm:min-h-[330px] sm:grid-cols-[1.1fr_0.9fr] sm:items-center sm:p-7"
-              style={{ background: preview.background, color: preview.ink }}
-            >
-              <div className="relative z-10 max-w-[28ch] py-3 sm:py-0">
-                <p className="meta opacity-65">{preview.label}</p>
-                <p className="mt-5 text-[25px] font-medium leading-[0.98] tracking-[-0.05em] sm:text-[34px]">
-                  {preview.headline}
-                </p>
-                <p className="mt-4 max-w-[30ch] text-[12.5px] leading-[1.65] opacity-75">
-                  {preview.detail}
-                </p>
-                <span
-                  className="mt-5 inline-flex min-h-9 items-center rounded-[7px] px-3 text-[11px] font-medium"
-                  style={{ background: preview.ink, color: preview.accent }}
-                >
-                  {preview.action} <span aria-hidden="true" className="ml-3">↗</span>
-                </span>
-              </div>
-
-              <motion.div
-                aria-hidden="true"
-                className="relative mx-auto mt-5 grid aspect-[0.86] w-[min(100%,190px)] grid-rows-[auto_1fr_auto] gap-3 rounded-[7px] p-3 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.5)] sm:mt-0 sm:w-full"
-                style={{ background: preview.accent, color: preview.ink }}
-                animate={reduced ? undefined : { y: [0, -5, 0] }}
-                transition={
-                  reduced
-                    ? undefined
-                    : {
-                        y: { duration: 5.5, repeat: Infinity, ease: "easeInOut" },
-                        scale: PREVIEW_SPRING,
-                        rotate: PREVIEW_SPRING,
-                      }
-                }
-                whileHover={reduced ? undefined : { scale: 1.025, rotate: -1 }}
-                whileTap={reduced ? undefined : { scale: 0.99 }}
-              >
-                <div className="flex items-center justify-between border-b border-current/15 pb-2">
-                  <span className="meta">TU MARCA</span>
-                  <span className="flex gap-1" aria-hidden="true">
-                    <i className="size-1 rounded-full bg-current/30" />
-                    <i className="size-1 rounded-full bg-current/30" />
-                    <i className="size-1 rounded-full bg-current/30" />
-                  </span>
-                </div>
-                <div className="flex flex-col justify-center">
-                  <span className="meta opacity-55">HECHO PARA VOS</span>
-                  <span className="mt-2 block h-3 w-[86%] rounded-sm bg-current/80" />
-                  <span className="mt-1.5 block h-2 w-[62%] rounded-sm bg-current/25" />
-                  <div className="mt-5 grid grid-cols-2 gap-2">
-                    <span className="aspect-[1.25] rounded-[4px]" style={{ background: preview.background }} />
-                    <span className="aspect-[1.25] rounded-[4px] bg-current/10" />
-                  </div>
-                </div>
-                <div className="flex items-center justify-between border-t border-current/15 pt-2">
-                  <span className="meta opacity-55">TU PRÓXIMA WEB</span>
-                  <span className="size-4 rounded-full" style={{ background: preview.background }} />
-                </div>
-              </motion.div>
-            </div>
+      <div
+        className="group relative isolate min-h-[320px] overflow-hidden rounded-[14px] border border-hairline bg-[#111613] shadow-[var(--shadow-float)] sm:min-h-[390px] lg:min-h-[440px]"
+        onPointerMove={(event) => {
+          const bounds = event.currentTarget.getBoundingClientRect();
+          event.currentTarget.style.setProperty(
+            "--spot-x",
+            `${event.clientX - bounds.left}px`,
+          );
+          event.currentTarget.style.setProperty(
+            "--spot-y",
+            `${event.clientY - bounds.top}px`,
           );
         }}
-      />
+        style={{
+          backgroundImage:
+            "radial-gradient(260px circle at var(--spot-x, 50%) var(--spot-y, 35%), rgba(91, 215, 156, 0.12), transparent 78%), linear-gradient(145deg, #15221c 0%, #111613 60%, #1b1a16 100%)",
+        }}
+      >
+        {!reduced ? (
+          <div className="absolute inset-0" aria-label="Escena 3D interactiva de Spline">
+            <SplineScene
+              scene={SPLINE_SCENE}
+              className="h-full w-full"
+              onLoad={() => setLoaded(true)}
+            />
+          </div>
+        ) : (
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 grid place-items-center overflow-hidden"
+          >
+            <motion.div
+              className="relative size-[min(58vw,250px)] rounded-[38%] border border-emerald-200/20 bg-[radial-gradient(circle_at_35%_30%,rgba(91,215,156,0.3),rgba(91,215,156,0.02)_65%)] shadow-[0_0_100px_-35px_rgba(91,215,156,0.35)]"
+              animate={reduced ? undefined : { rotate: 360 }}
+              transition={
+                reduced
+                  ? undefined
+                  : { duration: 28, ease: "linear", repeat: Infinity }
+              }
+            >
+              <span className="absolute inset-[14%] rounded-[42%] border border-white/10" />
+              <span className="absolute inset-[28%] rounded-full border border-emerald-100/20" />
+              <span className="absolute left-1/2 top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-200 shadow-[0_0_28px_8px_rgba(91,215,156,0.35)]" />
+            </motion.div>
+          </div>
+        )}
+
+        {!loaded && !reduced ? (
+          <div className="pointer-events-none absolute inset-0 z-10 grid place-items-center">
+            <span
+              aria-label="Cargando escena 3D"
+              className="size-7 animate-spin rounded-full border-2 border-white/15 border-t-emerald-200/80"
+              role="status"
+            />
+          </div>
+        ) : null}
+
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-black/45 via-transparent to-black/25"
+        />
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex items-start justify-between gap-4 p-4 sm:p-5">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/25 px-3 py-2 text-[10px] text-white/85 backdrop-blur-md">
+            <span className="size-1.5 rounded-full bg-emerald-300 shadow-[0_0_10px_rgba(110,231,183,0.8)]" />
+            EXPERIENCIA INTERACTIVA
+          </span>
+          <span className="meta rounded-full border border-white/10 bg-black/25 px-3 py-2 text-white/55 backdrop-blur-md">
+            MUEVE PARA EXPLORAR
+          </span>
+        </div>
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex items-end justify-between gap-4 p-4 sm:p-5">
+          <div>
+            <p className="meta text-emerald-100/70">DISEÑO · CÓDIGO · MOVIMIENTO</p>
+            <p className="mt-2 text-[18px] font-medium tracking-[-0.04em] text-white sm:text-[22px]">
+              Ideas que cobran vida.
+            </p>
+          </div>
+          <a
+            href="#portfolio"
+            className="pointer-events-auto inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full border border-white/20 bg-black/25 px-4 text-[11px] font-medium text-white backdrop-blur-md transition-colors hover:bg-white/10"
+          >
+            Ver proyectos <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+        <a
+          href="https://21st.dev/@serafimcloud/components/splite"
+          target="_blank"
+          rel="noreferrer"
+          className="absolute bottom-1 right-2 z-30 text-[9px] text-white/35 hover:text-white/70"
+          aria-label="Crédito de escena: componente Spline de Serafim en 21st.dev"
+        >
+          Scene by Serafim · 21st.dev
+        </a>
+      </div>
     </motion.div>
   );
 }
